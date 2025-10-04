@@ -32,6 +32,7 @@ export default function Login() {
         // store token in localStorage to access them later
         localStorage.setItem("token", data.token);
         localStorage.setItem("participantId", data.participantId);
+        localStorage.setItem("tokenType", data.type || "Bearer");
 
         setMessage("✅ Login successful!");
 
