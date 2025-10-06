@@ -2,13 +2,19 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Layout from "./components/Layout";
 import Login from "./pages/Login";
 import Dashboard from "./pages/Dashboard";
+import ResetPassword from "./pages/ResetPassword";
+import ResetPasswordConfirm from "./pages/ResetPasswordConfirm";
 
 function App() {
   return (
     <Router>
       <Routes>
+        {/* Public pages */}
         <Route path="/login" element={<Login />} />
+        <Route path="/forgot-password" element={<ResetPassword />} />
+        <Route path="/reset-password" element={<ResetPasswordConfirm />} />
 
+        {/* Protected pages (with Layout) */}
         <Route
           path="/*"
           element={

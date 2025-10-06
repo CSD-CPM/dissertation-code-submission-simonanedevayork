@@ -55,7 +55,7 @@ export default function Login() {
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              placeholder="Value"
+              placeholder="example@email.com"
             />
           </div>
 
@@ -65,15 +65,20 @@ export default function Login() {
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              placeholder="Value"
+              placeholder="yourpassword"
             />
           </div>
 
           <button type="submit">Sign In</button>
 
-          <a href="#" className="forgot-password">
-            Forgot password?
+          <a
+          onClick={() => navigate("/forgot-password")}
+          className="forgot-password"
+           style={{ cursor: "pointer" }}
+          >
+           Forgot password?
           </a>
+
 
           {message && <p className="login-message">{message}</p>}
         </form>
