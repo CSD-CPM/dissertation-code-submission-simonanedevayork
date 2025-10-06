@@ -4,6 +4,7 @@ import Login from "./pages/Login";
 import Dashboard from "./pages/Dashboard";
 import ResetPassword from "./pages/ResetPassword";
 import ResetPasswordConfirm from "./pages/ResetPasswordConfirm";
+import CreateDog from "./pages/CreateDog";
 
 function App() {
   return (
@@ -13,6 +14,7 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/forgot-password" element={<ResetPassword />} />
         <Route path="/reset-password" element={<ResetPasswordConfirm />} />
+        <Route path="create-dog" element={<CreateDog />} />
 
         {/* Protected pages (with Layout) */}
         <Route

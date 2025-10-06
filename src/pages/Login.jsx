@@ -32,7 +32,30 @@ export default function Login() {
         localStorage.setItem("participantId", data.participantId);
         localStorage.setItem("tokenType", data.type || "Bearer");
         setMessage("✅ Login successful!");
-        navigate("/dashboard");
+
+        // check if user has a dog, and if not - redirect to create dog page
+        const checkDogResponse = await fetch(
+          `http://localhost:8080/users/${data.participantId}/dog`,
+          {
+            method: "GET",
+            headers: {
+              "Authorization": `Bearer ${data.token}`,
+              "Content-Type": "application/json",
+            },
+          }
+        );
+        
+        if (checkDogResponse.status === 404) {
+          console.log("❌ No dog found — redirecting to create page...");
+          navigate("/create-dog");
+        } else if (checkDogResponse.ok) {
+          console.log("✅ Dog found — redirecting to dashboard...");
+          navigate("/dashboard");
+        } else {
+          console.error("⚠️ Unexpected response from dog check:", checkDogResponse.status);
+          setMessage("⚠️ Error checking dog profile.");
+        }
+        
       } else {
         setMessage("⚠️ Logged in but no token received");
       }
