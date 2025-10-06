@@ -1,5 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import "../components/Login.css";
+import logo from "../assets/logo.svg";
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -13,9 +15,7 @@ export default function Login() {
     try {
       const response = await fetch("http://localhost:8080/auth/login", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, password }),
       });
 
@@ -28,15 +28,10 @@ export default function Login() {
       console.log("✅ Login success:", data);
 
       if (data.token) {
-
-        // store token in localStorage to access them later
         localStorage.setItem("token", data.token);
         localStorage.setItem("participantId", data.participantId);
         localStorage.setItem("tokenType", data.type || "Bearer");
-
         setMessage("✅ Login successful!");
-
-        console.log("Redirecting to dashboard.");
         navigate("/dashboard");
       } else {
         setMessage("⚠️ Logged in but no token received");
@@ -48,45 +43,46 @@ export default function Login() {
   }
 
   return (
-    <form
-      onSubmit={handleSubmit}
-      style={{ width: 400, padding: 20, display: "flex", flexDirection: "column", gap: 16 }}
-    >
-      <div>
-        <label>Email</label>
-        <input
-          type="email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          style={{ width: "100%", padding: 12, borderRadius: 8, border: "1px solid #D9D9D9" }}
-        />
+    <div className="login-wrapper">
+      {/* Left side - form */}
+      <div className="login-left">
+        <h1 className="login-title">Access your account</h1>
+
+        <form className="login-form" onSubmit={handleSubmit}>
+          <div>
+            <label>Email</label>
+            <input
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              placeholder="Value"
+            />
+          </div>
+
+          <div>
+            <label>Password</label>
+            <input
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              placeholder="Value"
+            />
+          </div>
+
+          <button type="submit">Sign In</button>
+
+          <a href="#" className="forgot-password">
+            Forgot password?
+          </a>
+
+          {message && <p className="login-message">{message}</p>}
+        </form>
       </div>
 
-      <div>
-        <label>Password</label>
-        <input
-          type="password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          style={{ width: "100%", padding: 12, borderRadius: 8, border: "1px solid #D9D9D9" }}
-        />
+      {/* Right side - logo */}
+      <div className="login-right">
+        <img src={logo} alt="PawWell logo" />
       </div>
-
-      <button
-        type="submit"
-        style={{
-          padding: 12,
-          background: "#2C2C2C",
-          color: "white",
-          border: "none",
-          borderRadius: 8,
-          cursor: "pointer",
-        }}
-      >
-        Sign In
-      </button>
-
-      {message && <p>{message}</p>}
-    </form>
+    </div>
   );
 }

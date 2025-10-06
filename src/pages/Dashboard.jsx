@@ -1,6 +1,7 @@
 // src/pages/Dashboard.jsx
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import "../styles/Layout.css";
 
 export default function Dashboard() {
   const [dashboard, setDashboard] = useState(null);
@@ -103,7 +104,7 @@ export default function Dashboard() {
   } = dashboard;
 
   return (
-    <div style={{ padding: 20 }}>
+    <div className="page-container">
       <h1>Dashboard</h1>
 
       <p>

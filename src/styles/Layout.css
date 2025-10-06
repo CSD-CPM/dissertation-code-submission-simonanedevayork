@@ -1,0 +1,25 @@
+.page-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 100px 20px 40px;
+    font-family: "Outfit", sans-serif;
+    color: #0f172a;
+  }
+  
+  .page-container h1 {
+    font-size: 48px;
+    font-weight: 700;
+    margin-bottom: 24px;
+  }
+  
+  .page-container h2 {
+    font-size: 24px;
+    font-weight: 600;
+    margin-top: 32px;
+    margin-bottom: 12px;
+  }
+  
+  .page-container p {
+    font-size: 18px;
+    line-height: 1.5;
+  }  
