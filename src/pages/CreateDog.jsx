@@ -1,44 +1,68 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import "../components/Login.css";
 import logo from "../assets/logo.svg";
+import { dogBreeds as breeds } from "../data/dogBreeds"; // ✅ import breed list
 
 export default function CreateDog() {
   const navigate = useNavigate();
+
   const [formData, setFormData] = useState({
     name: "",
     birthDate: "",
     gender: "",
     breed: "",
-    photoUrl: "",
+    file: null,
     isNeutered: false,
   });
-  const [message, setMessage] = useState("");
 
+  const [message, setMessage] = useState("");
+  const fileInputRef = useRef(null);
+
+  // ✅ Handles text, checkbox, and file changes
   function handleChange(e) {
-    const { name, value, type, checked } = e.target;
+    const { name, value, type, checked, files } = e.target;
     setFormData((prev) => ({
       ...prev,
-      [name]: type === "checkbox" ? checked : value,
+      [name]:
+        type === "checkbox"
+          ? checked
+          : type === "file"
+          ? files[0]
+          : value,
     }));
   }
 
+  // ✅ Handles form submission with multipart/form-data
   async function handleSubmit(e) {
     e.preventDefault();
     setMessage("🐾 Creating dog profile...");
 
     try {
       const token = localStorage.getItem("token");
+      const formDataToSend = new FormData();
+
+      formDataToSend.append("name", formData.name);
+      formDataToSend.append("birthDate", formData.birthDate);
+      formDataToSend.append("gender", formData.gender);
+      formDataToSend.append("breed", formData.breed);
+      formDataToSend.append("isNeutered", formData.isNeutered.toString());
+      if (formData.file) {
+        formDataToSend.append("file", formData.file);
+      }
+
       const response = await fetch("http://localhost:8080/dogs", {
         method: "POST",
         headers: {
-          "Content-Type": "application/json",
-          "Authorization": `Bearer ${token}`,
+          Authorization: `Bearer ${token}`,
+          // ❗ don't set Content-Type manually for FormData
         },
-        body: JSON.stringify(formData),
+        body: formDataToSend,
       });
 
       if (response.ok) {
+        const result = await response.json();
+        console.log("✅ Dog created:", result);
         setMessage("✅ Dog registered successfully!");
         setTimeout(() => navigate("/dashboard"), 1500);
       } else {
@@ -59,6 +83,7 @@ export default function CreateDog() {
         <h1 className="login-title">Register your dog</h1>
 
         <form className="login-form" onSubmit={handleSubmit}>
+          {/* Name */}
           <div>
             <label>Name</label>
             <input
@@ -71,6 +96,7 @@ export default function CreateDog() {
             />
           </div>
 
+          {/* Date of Birth */}
           <div>
             <label>Date of birth</label>
             <input
@@ -82,41 +108,52 @@ export default function CreateDog() {
             />
           </div>
 
+          {/* Gender */}
           <div>
             <label>Gender</label>
-            <input
-              type="text"
+            <select
               name="gender"
               value={formData.gender}
               onChange={handleChange}
-              placeholder="Value"
               required
-            />
+            >
+              <option value="">Select gender</option>
+              <option value="MALE">Male</option>
+              <option value="FEMALE">Female</option>
+            </select>
           </div>
 
+          {/* Breed */}
           <div>
             <label>Breed</label>
-            <input
-              type="text"
+            <select
               name="breed"
               value={formData.breed}
               onChange={handleChange}
-              placeholder="Value"
               required
-            />
+            >
+              <option value="">Select breed</option>
+              {breeds.map((b) => (
+                <option key={b} value={b}>
+                  {b}
+                </option>
+              ))}
+            </select>
           </div>
 
+          {/* File Upload */}
           <div>
-            <label>Photo URL (optional)</label>
+            <label>Upload Photo (optional)</label>
             <input
-              type="text"
-              name="photoUrl"
-              value={formData.photoUrl}
+              type="file"
+              name="file"
+              accept="image/*"
+              ref={fileInputRef}
               onChange={handleChange}
-              placeholder="https://..."
             />
           </div>
 
+          {/* Neutered */}
           <div>
             <label className="checkbox-label">
               <input
@@ -129,8 +166,10 @@ export default function CreateDog() {
             </label>
           </div>
 
+          {/* Submit */}
           <button type="submit">Create Dog</button>
 
+          {/* Back */}
           <p
             className="forgot-password"
             onClick={() => navigate("/login")}
@@ -139,6 +178,7 @@ export default function CreateDog() {
             ← Back to Login
           </p>
 
+          {/* Message */}
           {message && <p className="login-message">{message}</p>}
         </form>
       </div>
