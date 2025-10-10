@@ -1,6 +1,6 @@
 .quiz-wrapper {
     background: rgba(240, 239, 239, 0.6);
-    border-radius: 30px;
+    border-radius: 8px;
     padding: 40px;
     max-width: 700px;
     margin: 0 auto;
@@ -27,6 +27,7 @@
     cursor: pointer;
     background: white;
     transition: all 0.2s ease;
+    border-radius: 8px;
   }
   
   .quiz-option:hover {
@@ -62,19 +63,21 @@
   }
   
   .quiz-submit {
-    margin-top: 30px;
-    padding: 12px 32px;
-    border-radius: 9999px;
-    border: 1px solid white;
-    background: black;
-    font-weight: 600;
+    padding: 12px;
+    background: #2c2c2c;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
     cursor: pointer;
-    transition: all 0.2s ease;
+    transition: background 0.2s;
+    width: 75%;
+    align-self: center;
+    margin-top: 20px;
   }
   
   .quiz-submit:hover {
-    background: black;
-    color: white;
+    background: #1a1a1a;
   }  
 
   .quiz-progress {

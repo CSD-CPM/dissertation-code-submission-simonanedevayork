@@ -1,0 +1,54 @@
+.weight-summary {
+    display: flex;
+    justify-content: space-between;
+    gap: 24px;
+    margin-top: 40px;
+    flex-wrap: wrap;
+  }
+  
+  .weight-box {
+    flex: 1;
+    background: rgba(240, 239, 239, 0.6);
+    border-radius: 20px;
+    padding: 24px;
+    text-align: center;
+    min-width: 280px;
+  }
+  
+  .weight-value {
+    font-size: 32px;
+    font-weight: 700;
+    margin-top: 10px;
+  }
+  
+  .weight-bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-top: 60px;
+    gap: 40px;
+  }
+  
+  .weight-graph {
+    flex: 1;
+    background: #fff;
+    border-radius: 30px;
+    box-shadow: 0 1.181px 3.542px rgba(13, 10, 44, 0.08);
+    padding: 20px;
+  }
+  
+  .weight-highlights {
+    flex: 1;
+  }
+  
+  .highlight-card {
+    background: rgba(240, 239, 239, 0.6);
+    border-radius: 16px;
+    padding: 16px 20px;
+    margin-bottom: 16px;
+    transition: transform 0.2s ease;
+  }
+  
+  .highlight-card:hover {
+    transform: translateY(-3px);
+  }  
