@@ -7,6 +7,8 @@ import ResetPasswordConfirm from "./pages/ResetPasswordConfirm";
 import CreateDog from "./pages/CreateDog";
 import HealthRecords from "./pages/HealthRecords";
 import AddHealthRecord from "./pages/AddHealthRecord";
+import Mobility from "./pages/Mobility";
+import MobilityQuiz from "./pages/MobilityQuiz";
 
 function App() {
   return (
@@ -29,10 +31,11 @@ function App() {
                 <Route path="hormones" element={<div>Hormones page</div>} />
                 <Route path="dental" element={<div>Dental page</div>} />
                 <Route path="heart" element={<div>Heart page</div>} />
-                <Route path="mobility" element={<div>Mobility page</div>} />
+                <Route path="mobility" element={<Mobility />} />
                 <Route path="health-records" element={<HealthRecords />} />
                 <Route path="profile" element={<div>Profile page</div>} />
                 <Route path="health-records/add" element={<AddHealthRecord />} />
+                <Route path="mobility/quiz" element={<MobilityQuiz />} />
               </Routes>
             </Layout>
           }
