@@ -6,6 +6,7 @@ import ResetPassword from "./pages/ResetPassword";
 import ResetPasswordConfirm from "./pages/ResetPasswordConfirm";
 import CreateDog from "./pages/CreateDog";
 import HealthRecords from "./pages/HealthRecords";
+import AddHealthRecord from "./pages/AddHealthRecord";
 
 function App() {
   return (
@@ -31,6 +32,7 @@ function App() {
                 <Route path="mobility" element={<div>Mobility page</div>} />
                 <Route path="health-records" element={<HealthRecords />} />
                 <Route path="profile" element={<div>Profile page</div>} />
+                <Route path="health-records/add" element={<AddHealthRecord />} />
               </Routes>
             </Layout>
           }

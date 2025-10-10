@@ -1,6 +1,6 @@
 .records-header {
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-end;
     align-items: center;
     margin-bottom: 32px;
   }
@@ -91,4 +91,23 @@
   
   .pdf-button:hover {
     background-color: #dc2626;
-  }  
+  }
+  
+  .record-actions {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    position: relative;
+  }
+  
+  .action-icon {
+    cursor: pointer;
+    font-size: 18px;
+    transition: transform 0.15s ease, opacity 0.15s ease;
+    pointer-events: auto;
+  }
+  
+  .action-icon:hover {
+    transform: scale(1.2);
+    opacity: 0.8;
+  }
