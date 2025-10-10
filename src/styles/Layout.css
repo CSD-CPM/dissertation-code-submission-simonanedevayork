@@ -12,11 +12,12 @@
     margin-bottom: 24px;
   }
   
-  .page-container h2 {
-    font-size: 24px;
-    font-weight: 600;
-    margin-top: 32px;
-    margin-bottom: 12px;
+  .page-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 80px 20px 40px;
+    font-family: "Outfit", sans-serif;
+    color: #0f172a;
   }
   
   .page-container p {

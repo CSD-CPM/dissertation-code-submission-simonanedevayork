@@ -67,7 +67,6 @@ export default function Login() {
 
   return (
     <div className="login-wrapper">
-      {/* Left side - form */}
       <div className="login-left">
         <h1 className="login-title">Access your account</h1>
 
@@ -107,7 +106,6 @@ export default function Login() {
         </form>
       </div>
 
-      {/* Right side - logo */}
       <div className="login-right">
         <img src={logo} alt="PawWell logo" />
       </div>

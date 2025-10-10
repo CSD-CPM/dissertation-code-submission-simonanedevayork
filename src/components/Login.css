@@ -8,10 +8,9 @@ body, html {
   font-family: "Outfit", sans-serif;
 }
 
-/* === Page Wrapper === */
 .login-wrapper {
   display: flex;
-  flex-direction: column;        /* ✅ Stack vertically by default */
+  flex-direction: column;
   align-items: center;
   justify-content: flex-start;
   min-height: 100vh;
@@ -19,9 +18,8 @@ body, html {
   background-color: #fafafa;
 }
 
-/* === Logo Section === */
 .login-right {
-  order: -1;                     /* ✅ Keep logo above form */
+  order: -1;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -33,7 +31,6 @@ body, html {
   height: auto;
 }
 
-/* === Form Section === */
 .login-left {
   display: flex;
   flex-direction: column;
@@ -82,7 +79,7 @@ body, html {
 }
 
 .login-form select {
-  appearance: none; /* Removes default browser arrow */
+  appearance: none;
   background-image: url("data:image/svg+xml,%3Csvg fill='black' height='20' viewBox='0 0 24 24' width='20' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");
   background-repeat: no-repeat;
   background-position: right 12px center;
@@ -119,7 +116,6 @@ body, html {
   gap: 6px;
 }
 
-/* === Buttons and messages === */
 .login-form button {
   padding: 12px;
   background: #2c2c2c;
@@ -157,7 +153,6 @@ body, html {
   color: #333;
 }
 
-/* === Mobile-friendly tweaks === */
 @media (max-width: 500px) {
   .login-wrapper {
     padding: 40px 0;

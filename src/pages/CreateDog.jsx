@@ -2,7 +2,7 @@ import { useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import "../components/Login.css";
 import logo from "../assets/logo.svg";
-import { dogBreeds as breeds } from "../data/dogBreeds"; // ✅ import breed list
+import { dogBreeds as breeds } from "../data/dogBreeds";
 
 export default function CreateDog() {
   const navigate = useNavigate();
@@ -19,7 +19,6 @@ export default function CreateDog() {
   const [message, setMessage] = useState("");
   const fileInputRef = useRef(null);
 
-  // ✅ Handles text, checkbox, and file changes
   function handleChange(e) {
     const { name, value, type, checked, files } = e.target;
     setFormData((prev) => ({
@@ -33,7 +32,6 @@ export default function CreateDog() {
     }));
   }
 
-  // ✅ Handles form submission with multipart/form-data
   async function handleSubmit(e) {
     e.preventDefault();
     setMessage("🐾 Creating dog profile...");
@@ -55,7 +53,6 @@ export default function CreateDog() {
         method: "POST",
         headers: {
           Authorization: `Bearer ${token}`,
-          // ❗ don't set Content-Type manually for FormData
         },
         body: formDataToSend,
       });

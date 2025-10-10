@@ -9,7 +9,7 @@ export default function ResetPasswordConfirm() {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
 
-  const token = searchParams.get("token"); // ✅ get token from URL
+  const token = searchParams.get("token");
 
   async function handleSubmit(e) {
     e.preventDefault();

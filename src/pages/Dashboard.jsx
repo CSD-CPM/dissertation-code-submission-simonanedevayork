@@ -1,7 +1,7 @@
-// src/pages/Dashboard.jsx
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "../styles/Layout.css";
+import "../styles/PageHeader.css";
 
 export default function Dashboard() {
   const [dashboard, setDashboard] = useState(null);
@@ -42,7 +42,6 @@ export default function Dashboard() {
 
         console.log("[Dashboard] response status:", res.status, res.statusText);
 
-        // Read text safely (handles empty body)
         const text = await res.text();
         console.log("[Dashboard] raw response text:", text);
 
@@ -55,7 +54,7 @@ export default function Dashboard() {
         }
 
         if (!res.ok) {
-          // 401 / 403 → logged out or invalid token: clear storage and go to login
+          // 401 / 403 → logged out or invalid token -> clear storage and go to login
           if (res.status === 401 || res.status === 403) {
             console.warn("[Dashboard] unauthorized - clearing credentials and redirecting");
             localStorage.removeItem("token");
@@ -65,14 +64,12 @@ export default function Dashboard() {
             return;
           }
 
-          // other server error -> show message but don't redirect
           setErrorMsg(`Server error: ${res.status}`);
           setDashboard(null);
           return;
         }
 
         console.log("[Dashboard] parsed data:", data);
-        // set into state (will be rendered)
         setDashboard(data);
       } catch (err) {
         console.error("[Dashboard] fetch exception:", err);
@@ -83,18 +80,15 @@ export default function Dashboard() {
     };
 
     fetchDashboard();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [navigate]);
 
   if (loading) return <p>Loading dashboard…</p>;
   if (errorMsg) return <div><p style={{ color: "red" }}>{errorMsg}</p></div>;
 
-  // If backend returned empty object or no meaningful fields
   if (!dashboard || Object.keys(dashboard).length === 0) {
     return <p>No dashboard data available.</p>;
   }
 
-  // Destructure expected fields with safe defaults
   const {
     overallHealthIndex = null,
     currentWeight = null,
@@ -105,7 +99,9 @@ export default function Dashboard() {
 
   return (
     <div className="page-container">
-      <h1>Dashboard</h1>
+      <div className="page-header">
+        <h1>Digital Dog Health Tracker<br />Dashboard</h1>
+      </div>
 
       <p>
         <strong>Overall health index:</strong>{" "}

@@ -1,0 +1,132 @@
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { FaCalendarAlt } from "react-icons/fa";
+import "../styles/Layout.css";
+import "../styles/PageHeader.css";
+import "../styles/HealthRecords.css";
+
+export default function HealthRecords() {
+  const navigate = useNavigate();
+
+  const [records, setRecords] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [errorMsg, setErrorMsg] = useState(null);
+
+  useEffect(() => {
+    const fetchHealthRecords = async () => {
+      const token = localStorage.getItem("token");
+      const tokenType = localStorage.getItem("tokenType") || "Bearer";
+      const participantId = localStorage.getItem("participantId");
+
+      if (!token || !participantId) {
+        navigate("/login");
+        return;
+      }
+
+      try {
+        let dogId = localStorage.getItem("dogId");
+
+        if (!dogId) {
+          const dogRes = await fetch(`http://localhost:8080/users/${participantId}/dog`, {
+            method: "GET",
+            headers: {
+              Authorization: `${tokenType} ${token}`,
+              "Content-Type": "application/json",
+            },
+          });
+
+          if (!dogRes.ok) throw new Error("Failed to fetch dog info");
+
+          const dogData = await dogRes.json();
+          dogId = dogData?.dogId;
+
+          if (!dogId) throw new Error("No dog found for this user");
+
+          localStorage.setItem("dogId", dogId);
+        }
+
+        const recRes = await fetch(`http://localhost:8080/dogs/${dogId}/health-records`, {
+          method: "GET",
+          headers: {
+            Authorization: `${tokenType} ${token}`,
+            "Content-Type": "application/json",
+          },
+        });
+
+        if (!recRes.ok) throw new Error(`Failed to fetch health records (${recRes.status})`);
+
+        const data = await recRes.json();
+        setRecords(data);
+      } catch (err) {
+        console.error("[HealthRecords] Fetch failed:", err);
+        setErrorMsg("Could not load health records.");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchHealthRecords();
+  }, [navigate]);
+
+  if (loading) return <p>Loading health records…</p>;
+  if (errorMsg) return <p style={{ color: "red" }}>{errorMsg}</p>;
+
+  return (
+    <div className="page-container">
+  <div className="page-header">
+    <h1>Digital Dog Health Tracker<br />Health Records</h1>
+  </div>
+
+  <div className="records-header">
+    <div className="records-controls">
+      <span className="record-count">
+        {records.length} {records.length === 1 ? "record" : "records"}
+      </span>
+      <button className="add-new" onClick={() => alert("Add new upload")}>
+        Add New
+      </button>
+    </div>
+  </div>
+
+      {records.length === 0 ? (
+        <p>No health records found yet.</p>
+      ) : (
+        <div className="records-list">
+          {records.map((rec) => {
+            const date = new Date(rec.createdTs);
+            const formatted = date.toLocaleDateString("en-US", {
+              year: "numeric",
+              month: "long",
+              day: "2-digit",
+            });
+
+            return (
+              <div key={rec.healthRecordId} className="record-card">
+                <div className="record-info">
+                  <div className="record-date">
+                    <FaCalendarAlt className="calendar-icon" />
+                    <span>{formatted}</span>
+                  </div>
+                  <div className="record-name">
+                    <strong>{rec.documentName}</strong>
+                  </div>
+                </div>
+
+                <div className="record-actions">
+                  <a
+                    href={rec.documentUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="pdf-button"
+                  >
+                    PDF
+                  </a>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      )}
+    </div>
+  );
+}
