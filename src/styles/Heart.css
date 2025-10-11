@@ -102,3 +102,14 @@
     transform: translateY(-3px);
   }
   
+  .delete-icon {
+    cursor: pointer;
+    font-size: 18px;
+    transition: transform 0.15s ease, opacity 0.15s ease;
+    pointer-events: auto;
+  }
+  
+  .delete-icon:hover {
+    transform: scale(1.2);
+    opacity: 0.8;
+  }  
