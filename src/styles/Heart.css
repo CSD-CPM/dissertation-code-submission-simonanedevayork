@@ -1,0 +1,104 @@
+.records-header {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    margin-bottom: 32px;
+  }
+  
+  .records-controls {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+  
+  .record-count {
+    font-weight: 600;
+    font-size: 16px;
+    color: #1f2937;
+  }
+  
+  .add-new {
+    background: #000;
+    color: #fff;
+    border: none;
+    border-radius: 40px;
+    padding: 10px 20px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+  
+  .add-new:hover {
+    background: #1a1a1a;
+  }
+  
+  .heart-bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-top: 60px;
+    gap: 40px;
+  }
+  
+  .heart-records {
+    flex: 1;
+  }
+  
+  .heart-highlights {
+    flex: 1;
+  }
+  
+  .record-card {
+    background: rgba(240, 239, 239, 0.6);
+    border-radius: 16px;
+    padding: 20px 24px;
+    margin-bottom: 16px;
+    transition: transform 0.2s ease;
+  }
+  
+  .record-card:hover {
+    transform: translateY(-3px);
+  }
+  
+  .record-date {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #1f2937;
+    font-size: 15px;
+    font-weight: 500;
+    margin-bottom: 8px;
+  }
+  
+  .heart-details p {
+    font-size: 15px;
+    margin: 3px 0;
+    color: #111;
+  }
+  
+  .action-icon {
+    cursor: pointer;
+    font-size: 18px;
+    color: #111;
+    opacity: 0.8;
+    transition: transform 0.15s ease, opacity 0.15s ease;
+  }
+  
+  .action-icon:hover {
+    transform: scale(1.15);
+    opacity: 1;
+  }
+  
+  .highlight-card {
+    background: rgba(240, 239, 239, 0.6);
+    border-radius: 16px;
+    padding: 16px 20px;
+    margin-bottom: 16px;
+    transition: transform 0.2s ease;
+  }
+  
+  .highlight-card:hover {
+    transform: translateY(-3px);
+  }
+  

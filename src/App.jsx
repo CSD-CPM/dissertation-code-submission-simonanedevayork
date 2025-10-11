@@ -12,6 +12,7 @@ import MobilityQuiz from "./pages/MobilityQuiz";
 import Weight from "./pages/Weight";
 import Hormones from "./pages/Hormones";
 import HormonesQuiz from "./pages/HormonesQuiz";
+import Heart from "./pages/Heart";
 
 function App() {
   return (
@@ -32,7 +33,7 @@ function App() {
                 <Route path="dashboard" element={<Dashboard />} />
                 <Route path="/hormones" element={<Hormones />} />
                 <Route path="dental" element={<div>Dental page</div>} />
-                <Route path="heart" element={<div>Heart page</div>} />
+                <Route path="/heart" element={<Heart />} />
                 <Route path="mobility" element={<Mobility />} />
                 <Route path="health-records" element={<HealthRecords />} />
                 <Route path="profile" element={<div>Profile page</div>} />
