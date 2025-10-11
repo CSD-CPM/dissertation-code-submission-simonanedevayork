@@ -1,4 +1,4 @@
-.weight-summary {
+.weight-status-grid {
     display: flex;
     justify-content: space-between;
     gap: 24px;
@@ -6,19 +6,44 @@
     flex-wrap: wrap;
   }
   
-  .weight-box {
+  .weight-card {
     flex: 1;
     background: rgba(240, 239, 239, 0.6);
     border-radius: 20px;
     padding: 24px;
-    text-align: center;
     min-width: 280px;
+    text-align: left;
+    transition: transform 0.2s ease;
+  }
+  
+  .weight-card:hover {
+    transform: translateY(-4px);
+  }
+  
+  .weight-card h3 {
+    font-size: 20px;
+    font-weight: 700;
+    margin-bottom: 10px;
+  }
+  
+  .weight-card p {
+    font-size: 16px;
+    line-height: 1.4;
+    color: #1f2937;
   }
   
   .weight-value {
-    font-size: 32px;
+    font-size: 28px;
     font-weight: 700;
     margin-top: 10px;
+  }
+  
+  .status-circle {
+    display: inline-block;
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    margin-left: 6px;
   }
   
   .weight-bottom {
@@ -29,18 +54,22 @@
     gap: 40px;
   }
   
-  .weight-graph {
+  .weight-graph-box {
     flex: 1;
+  }
+  
+  .graph-container {
     background: #fff;
     border-radius: 30px;
     box-shadow: 0 1.181px 3.542px rgba(13, 10, 44, 0.08);
     padding: 20px;
+    margin-top: 20px;
   }
   
   .weight-highlights {
     flex: 1;
   }
-  
+
   .highlight-card {
     background: rgba(240, 239, 239, 0.6);
     border-radius: 16px;

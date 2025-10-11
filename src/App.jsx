@@ -10,6 +10,8 @@ import AddHealthRecord from "./pages/AddHealthRecord";
 import Mobility from "./pages/Mobility";
 import MobilityQuiz from "./pages/MobilityQuiz";
 import Weight from "./pages/Weight";
+import Hormones from "./pages/Hormones";
+import HormonesQuiz from "./pages/HormonesQuiz";
 
 function App() {
   return (
@@ -28,7 +30,7 @@ function App() {
             <Layout>
               <Routes>
                 <Route path="dashboard" element={<Dashboard />} />
-                <Route path="hormones" element={<div>Hormones page</div>} />
+                <Route path="/hormones" element={<Hormones />} />
                 <Route path="dental" element={<div>Dental page</div>} />
                 <Route path="heart" element={<div>Heart page</div>} />
                 <Route path="mobility" element={<Mobility />} />
@@ -37,6 +39,7 @@ function App() {
                 <Route path="health-records/add" element={<AddHealthRecord />} />
                 <Route path="mobility/quiz" element={<MobilityQuiz />} />
                 <Route path="weight" element={<Weight />} />
+                <Route path="/hormones/quiz" element={<HormonesQuiz />} />
               </Routes>
             </Layout>
           }

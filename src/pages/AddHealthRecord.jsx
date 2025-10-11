@@ -4,6 +4,7 @@ import "../styles/Layout.css";
 import "../styles/PageHeader.css";
 import "../components/Login.css";
 import logo from "../assets/logo.svg";
+import { authFetch, authFetchFile } from "../utils/apiClient";
 
 export default function AddHealthRecord() {
   const navigate = useNavigate();
@@ -39,18 +40,27 @@ export default function AddHealthRecord() {
     setMessage("📄 Uploading health record...");
 
     try {
-      const token = localStorage.getItem("token");
-      const tokenType = localStorage.getItem("tokenType") || "Bearer";
       const participantId = localStorage.getItem("participantId");
+      if (!participantId) {
+        navigate("/login");
+        return;
+      }
 
       let dogId = localStorage.getItem("dogId");
 
       if (!dogId) {
-        const dogRes = await fetch(`http://localhost:8080/users/${participantId}/dog`, {
-          headers: { Authorization: `${tokenType} ${token}` },
-        });
-        const dogData = await dogRes.json();
-        dogId = dogData?.dogId;
+        const dogData = await authFetch(
+          `http://localhost:8080/users/${participantId}/dog`,
+          { method: "GET" },
+          navigate
+        );
+
+        if (!dogData?.dogId) {
+          setMessage("❌ No dog found for this user.");
+          return;
+        }
+
+        dogId = dogData.dogId;
         localStorage.setItem("dogId", dogId);
       }
 
@@ -58,15 +68,18 @@ export default function AddHealthRecord() {
       formDataToSend.append("documentName", formData.documentName);
       if (formData.file) formDataToSend.append("file", formData.file);
 
-      const res = await fetch(`http://localhost:8080/dogs/${dogId}/health-records`, {
-        method: "POST",
-        headers: { Authorization: `${tokenType} ${token}` },
-        body: formDataToSend,
-      });
+      const res = await authFetchFile(
+        `http://localhost:8080/dogs/${dogId}/health-records`,
+        {
+          method: "POST",
+          body: formDataToSend,
+        },
+        navigate
+      );
 
-      if (!res.ok) {
-        const errText = await res.text();
-        throw new Error(`Upload failed: ${errText}`);
+      if (!res) {
+        setMessage("❌ Upload failed.");
+        return;
       }
 
       setMessage("✅ Health record added successfully!");

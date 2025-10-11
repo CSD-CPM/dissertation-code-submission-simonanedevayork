@@ -3,47 +3,47 @@ import { useNavigate } from "react-router-dom";
 import "../styles/Layout.css";
 import "../styles/PageHeader.css";
 import "../styles/Mobility.css";
-import { mobilityStatusTexts } from "../data/mobilityStatusTexts";
+import { hormoneStatusTexts } from "../data/hormoneStatusTexts";
 import { authFetch } from "../utils/apiClient";
 
-export default function Mobility() {
-    const [mobilityData, setMobilityData] = useState(null);
-    const [loading, setLoading] = useState(true);
-    const [errorMsg, setErrorMsg] = useState(null);
-    const navigate = useNavigate();
-  
-    useEffect(() => {
-      const fetchMobility = async () => {
-        try {
-          const data = await authFetch(
-            "http://localhost:8080/mobility/status",
-            { method: "GET" },
-            navigate
-          );
-  
-          if (!data) {
-            setErrorMsg("Could not load mobility data.");
-            return;
-          }
-  
-          setMobilityData(data);
-        } catch (err) {
-          console.error("[Mobility] Fetch failed:", err);
-          setErrorMsg("Could not load mobility data.");
-        } finally {
-          setLoading(false);
+export default function Hormones() {
+  const [hormoneData, setHormoneData] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [errorMsg, setErrorMsg] = useState(null);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const fetchHormones = async () => {
+      try {
+        const data = await authFetch(
+          "http://localhost:8080/hormones/status",
+          { method: "GET" },
+          navigate
+        );
+
+        if (!data) {
+          setErrorMsg("Could not load hormone data.");
+          return;
         }
-      };
-  
-      fetchMobility();
-    }, [navigate]);
 
-  if (loading) return <p>Loading mobility tracker…</p>;
+        setHormoneData(data);
+      } catch (err) {
+        console.error("[Hormones] Fetch failed:", err);
+        setErrorMsg("Could not load hormone data.");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchHormones();
+  }, [navigate]);
+
+  if (loading) return <p>Loading hormone tracker…</p>;
   if (errorMsg) return <p style={{ color: "red" }}>{errorMsg}</p>;
-  if (!mobilityData) return null;
+  if (!hormoneData) return null;
 
-  const { healthHighlights = [] } = mobilityData;
-  const categories = ["patellar luxation", "hip dysplasia", "arthritis"];
+  const { healthHighlights = [] } = hormoneData;
+  const categories = ["thyroid", "adrenal", "pancreatic"];
 
   const colorMap = {
     red: "🔴",
@@ -54,13 +54,13 @@ export default function Mobility() {
   return (
     <div className="page-container">
       <div className="page-header">
-        <h1>Digital Dog Health Tracker<br />Mobility Tracker</h1>
+        <h1>Digital Dog Health Tracker<br />Hormones Tracker</h1>
       </div>
 
       <div className="mobility-status-grid">
         {categories.map((cat) => {
-          const status = mobilityData[cat] || "red";
-          const info = mobilityStatusTexts[cat][status];
+          const status = hormoneData[cat] || "red";
+          const info = hormoneStatusTexts[cat][status];
 
           return (
             <div key={cat} className="mobility-card">
@@ -75,16 +75,16 @@ export default function Mobility() {
 
       <div className="mobility-bottom">
         <div className="mobility-quiz">
-          <h2>The Mobility Quiz</h2>
-          <div className="quiz-box" onClick={() => navigate("/mobility/quiz")}>
+          <h2>The Hormone Quiz</h2>
+          <div className="quiz-box" onClick={() => navigate("/hormones/quiz")}>
             <h1>START NOW</h1>
           </div>
         </div>
 
         <div className="mobility-highlights">
-          <h2>Mobility Highlights</h2>
+          <h2>Hormone Highlights</h2>
           {healthHighlights.length === 0 ? (
-            <p>No mobility highlights available.</p>
+            <p>No hormone highlights available.</p>
           ) : (
             healthHighlights.map((h, idx) => (
               <div key={idx} className="highlight-card">

@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { authFetch } from "../utils/apiClient";
 import "../styles/Layout.css";
 import "../styles/PageHeader.css";
-import "../styles/MobilityQuiz.css"
-import { authFetch } from "../utils/apiClient";
+import "../styles/MobilityQuiz.css";
 
-export default function MobilityQuiz() {
+export default function HormonesQuiz() {
   const [questions, setQuestions] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [answers, setAnswers] = useState({});
@@ -17,7 +17,7 @@ export default function MobilityQuiz() {
     const fetchQuestions = async () => {
       try {
         const data = await authFetch(
-          "http://localhost:8080/mobility/quiz",
+          "http://localhost:8080/hormones/quiz",
           { method: "GET" },
           navigate
         );
@@ -29,7 +29,7 @@ export default function MobilityQuiz() {
 
         setQuestions(data);
       } catch (err) {
-        console.error("[MobilityQuiz] Failed:", err);
+        console.error("[HormonesQuiz] Failed:", err);
         setMessage("❌ Could not load quiz.");
       } finally {
         setLoading(false);
@@ -39,7 +39,7 @@ export default function MobilityQuiz() {
     fetchQuestions();
   }, [navigate]);
 
-  if (loading) return <p>Loading quiz...</p>;
+  if (loading) return <p>Loading hormones quiz...</p>;
   if (message) return <p>{message}</p>;
   if (questions.length === 0) return <p>No quiz data.</p>;
 
@@ -61,7 +61,7 @@ export default function MobilityQuiz() {
 
     try {
       const data = await authFetch(
-        "http://localhost:8080/mobility/quiz",
+        "http://localhost:8080/hormones/quiz",
         {
           method: "POST",
           body: JSON.stringify(answers),
@@ -74,10 +74,10 @@ export default function MobilityQuiz() {
         return;
       }
 
-      setMessage("✅ Quiz submitted successfully!");
-      setTimeout(() => navigate("/mobility"), 1500);
+      setMessage("✅ Hormone quiz submitted successfully!");
+      setTimeout(() => navigate("/hormones"), 1500);
     } catch (err) {
-      console.error("[MobilityQuiz] Submit failed:", err);
+      console.error("[HormonesQuiz] Submit failed:", err);
       alert("❌ Failed to submit quiz.");
     }
   }
@@ -87,12 +87,11 @@ export default function MobilityQuiz() {
       <div className="page-header">
         <h1>
           Digital Dog Health Tracker<br />
-          Mobility Quiz
+          Hormones Quiz
         </h1>
       </div>
 
       <div className="quiz-wrapper">
-
         <h3 className="quiz-question">{currentQuestion.question}</h3>
 
         <div className="quiz-options">
@@ -129,27 +128,24 @@ export default function MobilityQuiz() {
           </button>
         </div>
 
-<div className="quiz-progress">
-  <p className="quiz-progress-label">
-    Question {currentIndex + 1} of {total}
-  </p>
-  <div className="quiz-progress-bar">
-    <div
-      className="quiz-progress-fill"
-      style={{ width: `${((currentIndex + 1) / total) * 100}%` }}
-    />
-  </div>
-</div>
+        <div className="quiz-progress">
+          <p className="quiz-progress-label">
+            Question {currentIndex + 1} of {total}
+          </p>
+          <div className="quiz-progress-bar">
+            <div
+              className="quiz-progress-fill"
+              style={{ width: `${((currentIndex + 1) / total) * 100}%` }}
+            />
+          </div>
+        </div>
 
-
-{currentIndex === total - 1 && (
+        {currentIndex === total - 1 && (
           <button className="quiz-submit" onClick={handleSubmit}>
             SUBMIT
           </button>
         )}
-
       </div>
-
     </div>
   );
 }

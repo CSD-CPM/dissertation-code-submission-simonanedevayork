@@ -4,6 +4,7 @@ import { FaCalendarAlt, FaDownload, FaTrashAlt } from "react-icons/fa";
 import "../styles/Layout.css";
 import "../styles/PageHeader.css";
 import "../styles/HealthRecords.css";
+import { authFetch, authFetchFile } from "../utils/apiClient";
 
 export default function HealthRecords() {
   const navigate = useNavigate();
@@ -14,48 +15,44 @@ export default function HealthRecords() {
 
   useEffect(() => {
     const fetchHealthRecords = async () => {
-      const token = localStorage.getItem("token");
-      const tokenType = localStorage.getItem("tokenType") || "Bearer";
-      const participantId = localStorage.getItem("participantId");
-
-      if (!token || !participantId) {
-        navigate("/login");
-        return;
-      }
-
       try {
+        const participantId = localStorage.getItem("participantId");
+        if (!participantId) {
+          navigate("/login");
+          return;
+        }
+
         let dogId = localStorage.getItem("dogId");
 
         if (!dogId) {
-          const dogRes = await fetch(`http://localhost:8080/users/${participantId}/dog`, {
-            method: "GET",
-            headers: {
-              Authorization: `${tokenType} ${token}`,
-              "Content-Type": "application/json",
-            },
-          });
+          const dogData = await authFetch(
+            `http://localhost:8080/users/${participantId}/dog`,
+            { method: "GET" },
+            navigate
+          );
 
-          if (!dogRes.ok) throw new Error("Failed to fetch dog info");
+          if (!dogData || !dogData.dogId) {
+            setErrorMsg("No dog found for this user.");
+            setLoading(false);
+            return;
+          }
 
-          const dogData = await dogRes.json();
-          dogId = dogData?.dogId;
-
-          if (!dogId) throw new Error("No dog found for this user");
-
+          dogId = dogData.dogId;
           localStorage.setItem("dogId", dogId);
         }
 
-        const recRes = await fetch(`http://localhost:8080/dogs/${dogId}/health-records`, {
-          method: "GET",
-          headers: {
-            Authorization: `${tokenType} ${token}`,
-            "Content-Type": "application/json",
-          },
-        });
+        // Step 2: Fetch health records
+        const data = await authFetch(
+          `http://localhost:8080/dogs/${dogId}/health-records`,
+          { method: "GET" },
+          navigate
+        );
 
-        if (!recRes.ok) throw new Error(`Failed to fetch health records (${recRes.status})`);
+        if (!data) {
+          setErrorMsg("Could not load health records.");
+          return;
+        }
 
-        const data = await recRes.json();
         setRecords(data);
       } catch (err) {
         console.error("[HealthRecords] Fetch failed:", err);
@@ -70,20 +67,19 @@ export default function HealthRecords() {
 
   async function handleDownload(recordId, documentName) {
     try {
-      const token = localStorage.getItem("token");
-      const tokenType = localStorage.getItem("tokenType") || "Bearer";
       const dogId = localStorage.getItem("dogId");
-  
-      const res = await fetch(
+
+      const res = await authFetchFile(
         `http://localhost:8080/dogs/${dogId}/health-records/${recordId}/download`,
-        {
-          method: "GET",
-          headers: { Authorization: `${tokenType} ${token}` },
-        }
+        { method: "GET" },
+        navigate
       );
-  
-      if (!res.ok) throw new Error(`Download failed (${res.status})`);
-  
+
+      if (!res) {
+        alert("❌ Failed to download file.");
+        return;
+      }
+
       const blob = await res.blob();
       const url = window.URL.createObjectURL(blob);
       const a = document.createElement("a");
@@ -101,19 +97,18 @@ export default function HealthRecords() {
     if (!window.confirm("Are you sure you want to delete this record?")) return;
 
     try {
-      const token = localStorage.getItem("token");
-      const tokenType = localStorage.getItem("tokenType") || "Bearer";
       const dogId = localStorage.getItem("dogId");
 
-      const res = await fetch(
+      const res = await authFetch(
         `http://localhost:8080/dogs/${dogId}/health-records/${recordId}`,
-        {
-          method: "DELETE",
-          headers: { Authorization: `${tokenType} ${token}` },
-        }
+        { method: "DELETE" },
+        navigate
       );
 
-      if (!res.ok) throw new Error(`Delete failed (${res.status})`);
+      if (!res) {
+        alert("❌ Failed to delete record.");
+        return;
+      }
 
       setRecords((prev) => prev.filter((r) => r.healthRecordId !== recordId));
     } catch (err) {
