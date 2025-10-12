@@ -21,7 +21,7 @@ export default function Dental() {
           navigate("/login");
           return;
         }
-
+  
         let dogId = localStorage.getItem("dogId");
         if (!dogId) {
           const dogData = await authFetch(
@@ -37,20 +37,21 @@ export default function Dental() {
           dogId = dogData.dogId;
           localStorage.setItem("dogId", dogId);
         }
-
-        const dentalRecords = await authFetch(
+  
+        const dentalResponse = await authFetch(
           `http://localhost:8080/dogs/${dogId}/dental`,
           { method: "GET" },
           navigate
         );
-
-        if (!dentalRecords) {
+  
+        if (!dentalResponse || !dentalResponse.dentalRecords) {
           setErrorMsg("Could not load dental data.");
           return;
         }
-
-        setRecords(dentalRecords);
-        setHighlights(dentalRecords[0]?.healthHighlights || []);
+  
+        setRecords(dentalResponse.dentalRecords || []);
+        setHighlights(dentalResponse.healthHighlights || []);
+  
       } catch (err) {
         console.error("[Dental] Fetch failed:", err);
         setErrorMsg("Could not load dental data.");
@@ -58,9 +59,9 @@ export default function Dental() {
         setLoading(false);
       }
     };
-
+  
     fetchDentalData();
-  }, [navigate]);
+  }, [navigate]);  
 
   async function handleDelete(dentalId) {
     if (!window.confirm("Are you sure you want to delete this dental record?")) return;
