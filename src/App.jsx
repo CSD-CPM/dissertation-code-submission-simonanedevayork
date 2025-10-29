@@ -16,6 +16,7 @@ import Heart from "./pages/Heart";
 import AddHeartRecord from "./pages/AddHeartRecord";
 import Dental from "./pages/Dental";
 import AddDentalRecord from "./pages/AddDentalRecord";
+import Register from "./pages/Register";
 
 function App() {
   return (
@@ -25,6 +26,7 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/forgot-password" element={<ResetPassword />} />
         <Route path="/reset-password" element={<ResetPasswordConfirm />} />
+        <Route path="/register" element={<Register />} />
         <Route path="create-dog" element={<CreateDog />} />
 
         {/* Protected pages (with Layout) */}

@@ -93,14 +93,23 @@ export default function Login() {
 
           <button type="submit">Sign In</button>
 
-          <a
-          onClick={() => navigate("/forgot-password")}
-          className="forgot-password"
-           style={{ cursor: "pointer" }}
-          >
-           Forgot password?
-          </a>
+          <div className="login-links">
+  <a
+    onClick={() => navigate("/forgot-password")}
+    className="forgot-password"
+    style={{ cursor: "pointer" }}
+  >
+    Forgot password?
+  </a>
 
+  <a
+    onClick={() => navigate("/register")}
+    className="register-link"
+    style={{ cursor: "pointer" }}
+  >
+    Don’t have an account yet? Register now!
+  </a>
+</div>
 
           {message && <p className="login-message">{message}</p>}
         </form>

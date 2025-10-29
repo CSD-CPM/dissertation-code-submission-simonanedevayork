@@ -12,7 +12,7 @@ export default function HormonesQuiz() {
   const [loading, setLoading] = useState(true);
   const [message, setMessage] = useState(null);
   const navigate = useNavigate();
-
+``
   useEffect(() => {
     const fetchQuestions = async () => {
       try {
