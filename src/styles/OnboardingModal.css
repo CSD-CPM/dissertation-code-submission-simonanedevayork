@@ -51,11 +51,25 @@
     height: 10px;
     border-radius: 50%;
     background: #ccc;
-    transition: background 0.2s ease;
+    transition: background 0.2s ease, transform 0.2s ease;
   }
   
   .dot.active {
     background: #111;
+    transform: scale(1.2);
+  }
+  
+  .dot:hover {
+    background: #888;
+  }
+  
+  button.back {
+    background: transparent;
+    color: #555;
+  }
+  
+  button.back:hover {
+    text-decoration: underline;
   }
   
   .onboarding-actions {

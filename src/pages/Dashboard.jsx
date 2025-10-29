@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "../styles/Layout.css";
 import "../styles/Dashboard.css";
+import OnboardingModal from "./OnboardingModal";
 import { authFetch } from "../utils/apiClient";
 
 export default function Dashboard() {
@@ -10,6 +11,15 @@ export default function Dashboard() {
   const [loading, setLoading] = useState(true);
   const [errorMsg, setErrorMsg] = useState(null);
   const navigate = useNavigate();
+
+  const [showOnboarding, setShowOnboarding] = useState(false);
+
+useEffect(() => {
+  const seen = localStorage.getItem("pawwellOnboardingSeen");
+  if (!seen) {
+    setShowOnboarding(true);
+  }
+}, []);
 
   useEffect(() => {
     const fetchDashboardData = async () => {
@@ -71,6 +81,8 @@ export default function Dashboard() {
           Overview
         </h1>
       </div>
+
+      {showOnboarding && <OnboardingModal onClose={() => setShowOnboarding(false)} />}
 
       <div className="dashboard-summary">
         <div className="welcome-section">

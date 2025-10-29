@@ -33,6 +33,14 @@ export default function OnboardingModal({ onClose }) {
     else handleFinish();
   };
 
+  const handlePrev = () => {
+    if (step > 0) setStep(step - 1);
+  };
+
+  const handleDotClick = (index) => {
+    setStep(index);
+  };
+
   const handleFinish = () => {
     localStorage.setItem("pawwellOnboardingSeen", "true");
     onClose();
@@ -42,19 +50,33 @@ export default function OnboardingModal({ onClose }) {
     <div className="onboarding-overlay">
       <div className="onboarding-modal">
         <img src={logo} alt="PawWell Logo" className="onboarding-logo" />
+
         <h2>{slides[step].title}</h2>
         <p>{slides[step].text}</p>
 
         <div className="onboarding-dots">
           {slides.map((_, i) => (
-            <span key={i} className={i === step ? "dot active" : "dot"}></span>
+            <span
+              key={i}
+              className={i === step ? "dot active" : "dot"}
+              onClick={() => handleDotClick(i)} // ✅ clickable dots
+              style={{ cursor: "pointer" }}
+              aria-label={`Go to slide ${i + 1}`}
+            ></span>
           ))}
         </div>
 
         <div className="onboarding-actions">
-          <button className="skip" onClick={handleFinish}>
-            Skip
-          </button>
+          {step > 0 ? (
+            <button className="back" onClick={handlePrev}>
+              Back
+            </button>
+          ) : (
+            <button className="skip" onClick={handleFinish}>
+              Skip
+            </button>
+          )}
+
           <button className="next" onClick={handleNext}>
             {step === slides.length - 1 ? "Finish" : "Next"}
           </button>
