@@ -10,16 +10,42 @@ export default function Dashboard() {
   const [dog, setDog] = useState(null);
   const [loading, setLoading] = useState(true);
   const [errorMsg, setErrorMsg] = useState(null);
-  const navigate = useNavigate();
-
+  const [user, setUser] = useState(null);
   const [showOnboarding, setShowOnboarding] = useState(false);
 
-useEffect(() => {
-  const seen = localStorage.getItem("pawwellOnboardingSeen");
-  if (!seen) {
-    setShowOnboarding(true);
-  }
-}, []);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      try {
+        const participantId = localStorage.getItem("participantId");
+        if (!participantId) {
+          navigate("/login");
+          return;
+        }
+
+        const userResponse = await authFetch(
+          `http://localhost:8080/users/${participantId}`,
+          { method: "GET" },
+          navigate
+        );
+
+        setUser(userResponse);
+
+        if (
+          !userResponse.onboardingCompleted ||
+          !userResponse.consentGranted
+        ) {
+          setShowOnboarding(true);
+        }
+      } catch (err) {
+        console.error("[User Fetch Error]:", err);
+        navigate("/login");
+      }
+    };
+
+    fetchUser();
+  }, [navigate]);
 
   useEffect(() => {
     const fetchDashboardData = async () => {
@@ -45,7 +71,7 @@ useEffect(() => {
         setDashboard(data);
         setDog(dogData);
       } catch (err) {
-        console.error("[Dashboard] Fetch failed:", err);
+        console.error("[Dashboard Fetch Error]:", err);
         setErrorMsg("Could not load dashboard data.");
       } finally {
         setLoading(false);
@@ -54,6 +80,37 @@ useEffect(() => {
 
     fetchDashboardData();
   }, [navigate]);
+
+  const handleOnboardingComplete = async (consentGranted) => {
+    const participantId = localStorage.getItem("participantId");
+
+    if (!consentGranted) {
+      localStorage.clear();
+      navigate("/login");
+      return;
+    }
+
+    try {
+      const response = await authFetch(
+        `http://localhost:8080/users/${participantId}/onboarding`,
+        {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            onboardingCompleted: true,
+            consentGranted: true,
+          }),
+        },
+        navigate
+      );
+
+      console.log("[Onboarding Updated]", response);
+      setShowOnboarding(false);
+      setUser(response);
+    } catch (err) {
+      console.error("[Onboarding Update Error]:", err);
+    }
+  };
 
   if (loading) return <p>Loading dashboard…</p>;
   if (errorMsg) return <p style={{ color: "red" }}>{errorMsg}</p>;
@@ -81,8 +138,46 @@ useEffect(() => {
           Overview
         </h1>
       </div>
+      {showOnboarding && (
+  <OnboardingModal
+    onClose={() => setShowOnboarding(false)}
+    onConsent={async (consented) => {
+      const participantId = localStorage.getItem("participantId");
 
-      {showOnboarding && <OnboardingModal onClose={() => setShowOnboarding(false)} />}
+      if (!consented) {
+        localStorage.clear();
+        navigate("/login");
+        return;
+      }
+
+      try {
+        const response = await authFetch(
+          `http://localhost:8080/users/${participantId}/onboarding`,
+          {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              participantId,
+              onboardingCompleted: true,
+              consentGranted: true,
+            }),
+          },
+          navigate
+        );
+
+        if (response.ok || response.status === 200) {
+          console.log("[Onboarding] Consent granted successfully");
+          localStorage.setItem("pawwellOnboardingSeen", "true");
+          setShowOnboarding(false);
+        } else {
+          console.error("[Onboarding] Failed to update consent:", response);
+        }
+      } catch (err) {
+        console.error("[Onboarding] Error updating consent:", err);
+      }
+    }}
+  />
+)}
 
       <div className="dashboard-summary">
         <div className="welcome-section">

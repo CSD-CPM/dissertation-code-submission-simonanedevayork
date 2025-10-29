@@ -103,4 +103,58 @@
   @keyframes fadeIn {
     from { opacity: 0; transform: translateY(10px); }
     to { opacity: 1; transform: translateY(0); }
+  }
+
+  .consent-buttons {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  gap: 12px;
+}
+
+button.agree {
+  background: #007b55;
+  color: white;
+  border: none;
+  border-radius: 12px;
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+  font-family: "Outfit", sans-serif;
+  transition: all 0.2s;
+}
+
+button.decline {
+  background: #f2f2f2;
+  color: #000;
+  border: none;
+  border-radius: 12px;
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+  font-family: "Outfit", sans-serif;
+  transition: all 0.2s;
+}
+
+button.decline:hover {
+  background: #e4e4e4;
+}
+
+button.agree:hover {
+  opacity: 0.9;
+}
+
+button.jump {
+    background: transparent;
+    border: 2px solid #000;
+    color: #000;
+    padding: 10px 18px;
+    font-size: 16px;
+    cursor: pointer;
+    font-family: "Outfit", sans-serif;
+    transition: all 0.2s ease;
+  }
+  
+  button.jump:hover {
+    background: #f2f2f2;
   }  
