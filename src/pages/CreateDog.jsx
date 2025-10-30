@@ -75,12 +75,10 @@ export default function CreateDog() {
 
   return (
     <div className="login-wrapper">
-      {/* Left side - form */}
       <div className="login-left">
         <h1 className="login-title">Register your dog</h1>
 
         <form className="login-form" onSubmit={handleSubmit}>
-          {/* Name */}
           <div>
             <label>Name</label>
             <input
@@ -93,7 +91,6 @@ export default function CreateDog() {
             />
           </div>
 
-          {/* Date of Birth */}
           <div>
             <label>Date of birth</label>
             <input
@@ -105,7 +102,6 @@ export default function CreateDog() {
             />
           </div>
 
-          {/* Gender */}
           <div>
             <label>Gender</label>
             <select
@@ -120,7 +116,6 @@ export default function CreateDog() {
             </select>
           </div>
 
-          {/* Breed */}
           <div>
             <label>Breed</label>
             <select
@@ -138,7 +133,6 @@ export default function CreateDog() {
             </select>
           </div>
 
-          {/* File Upload */}
           <div>
             <label>Upload Photo (optional)</label>
             <input
@@ -150,7 +144,6 @@ export default function CreateDog() {
             />
           </div>
 
-          {/* Neutered */}
           <div>
             <label className="checkbox-label">
               <input
@@ -163,10 +156,8 @@ export default function CreateDog() {
             </label>
           </div>
 
-          {/* Submit */}
           <button type="submit">Create Dog</button>
 
-          {/* Back */}
           <p
             className="forgot-password"
             onClick={() => navigate("/login")}
@@ -175,12 +166,10 @@ export default function CreateDog() {
             ← Back to Login
           </p>
 
-          {/* Message */}
           {message && <p className="login-message">{message}</p>}
         </form>
       </div>
 
-      {/* Right side - logo */}
       <div className="login-right">
         <img src={logo} alt="PawWell logo" />
       </div>

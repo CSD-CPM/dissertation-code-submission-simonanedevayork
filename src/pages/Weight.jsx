@@ -175,7 +175,6 @@ export default function WeightTracker() {
       </div>
 
       <div className="weight-bottom">
-        {/* Left side: graph */}
         <div className="weight-graph-box">
           <h2>Weight Graph</h2>
           <div className="graph-container">
@@ -202,7 +201,6 @@ export default function WeightTracker() {
           </div>
         </div>
 
-        {/* Right side: all weight records */}
         <div className="weight-highlights">
           <h2>All Weight Records</h2>
           {weights.length === 0 ? (

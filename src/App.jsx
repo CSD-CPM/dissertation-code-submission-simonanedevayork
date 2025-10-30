@@ -24,14 +24,14 @@ function App() {
   return (
     <Router>
       <Routes>
-        {/* Public pages */}
+        {/* Public routes */}
         <Route path="/login" element={<Login />} />
         <Route path="/forgot-password" element={<ResetPassword />} />
         <Route path="/reset-password" element={<ResetPasswordConfirm />} />
         <Route path="/register" element={<Register />} />
         <Route path="create-dog" element={<CreateDog />} />
 
-        {/* Protected pages (with Layout) */}
+        {/* Protected routes */}
         <Route
           path="/*"
           element={

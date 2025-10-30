@@ -71,7 +71,6 @@ export default function ResetPassword() {
         </form>
       </div>
 
-      {/* Right side - logo */}
       <div className="login-right">
         <img src={logo} alt="PawWell logo" />
       </div>
