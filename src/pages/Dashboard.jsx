@@ -138,46 +138,47 @@ export default function Dashboard() {
           Overview
         </h1>
       </div>
+
       {showOnboarding && (
-  <OnboardingModal
-    onClose={() => setShowOnboarding(false)}
-    onConsent={async (consented) => {
-      const participantId = localStorage.getItem("participantId");
+        <OnboardingModal
+          onClose={() => setShowOnboarding(false)}
+          onConsent={async (consented) => {
+            const participantId = localStorage.getItem("participantId");
 
-      if (!consented) {
-        localStorage.clear();
-        navigate("/login");
-        return;
-      }
+            if (!consented) {
+              localStorage.clear();
+              navigate("/login");
+              return;
+            }
 
-      try {
-        const response = await authFetch(
-          `http://localhost:8080/users/${participantId}/onboarding`,
-          {
-            method: "PUT",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-              participantId,
-              onboardingCompleted: true,
-              consentGranted: true,
-            }),
-          },
-          navigate
-        );
+            try {
+              const response = await authFetch(
+                `http://localhost:8080/users/${participantId}/onboarding`,
+                {
+                  method: "PUT",
+                  headers: { "Content-Type": "application/json" },
+                  body: JSON.stringify({
+                    participantId,
+                    onboardingCompleted: true,
+                    consentGranted: true,
+                  }),
+                },
+                navigate
+              );
 
-        if (response.ok || response.status === 200) {
-          console.log("[Onboarding] Consent granted successfully");
-          localStorage.setItem("pawwellOnboardingSeen", "true");
-          setShowOnboarding(false);
-        } else {
-          console.error("[Onboarding] Failed to update consent:", response);
-        }
-      } catch (err) {
-        console.error("[Onboarding] Error updating consent:", err);
-      }
-    }}
-  />
-)}
+              if (response && response.participantId) {
+                console.log("[Onboarding] Consent granted successfully:", response);
+                localStorage.setItem("pawwellOnboardingSeen", "true");
+                setShowOnboarding(false);
+              } else {
+                console.error("[Onboarding] Failed to update consent:", response);
+              }
+            } catch (err) {
+              console.error("[Onboarding] Error updating consent:", err);
+            }
+          }}
+        />
+      )}
 
       <div className="dashboard-summary">
         <div className="welcome-section">
@@ -209,29 +210,29 @@ export default function Dashboard() {
 
       <div className="dashboard-lower">
         <div className="status-column">
-          <div className="highlight-card">
-            <h2>Hormone Status</h2>
-            {Object.entries(hormonesStatus)
-              .filter(([k]) => k !== "healthHighlights")
-              .map(([key, value]) => (
-                <p key={key}>
-                  <strong>{key.charAt(0).toUpperCase() + key.slice(1)}:</strong>{" "}
-                  {colorCircle(value)}
-                </p>
-              ))}
-          </div>
+        <div className="highlight-card">
+  <h2>Hormone Status</h2>
+  {Object.entries(hormonesStatus)
+    .filter(([k]) => k !== "healthHighlights")
+    .map(([key, value]) => (
+      <p key={key}>
+        <strong>{key.charAt(0).toUpperCase() + key.slice(1)}:</strong>{" "}
+        {value ? colorCircle(value) : "—"}
+      </p>
+    ))}
+</div>
 
-          <div className="highlight-card">
-            <h2>Mobility Status</h2>
-            {Object.entries(mobilityStatus)
-              .filter(([k]) => k !== "healthHighlights")
-              .map(([key, value]) => (
-                <p key={key}>
-                  <strong>{key.charAt(0).toUpperCase() + key.slice(1)}:</strong>{" "}
-                  {colorCircle(value)}
-                </p>
-              ))}
-          </div>
+<div className="highlight-card">
+  <h2>Mobility Status</h2>
+  {Object.entries(mobilityStatus)
+    .filter(([k]) => k !== "healthHighlights")
+    .map(([key, value]) => (
+      <p key={key}>
+        <strong>{key.charAt(0).toUpperCase() + key.slice(1)}:</strong>{" "}
+        {value ? colorCircle(value) : "—"}
+      </p>
+    ))}
+</div>
         </div>
 
         <div className="dashboard-highlights">

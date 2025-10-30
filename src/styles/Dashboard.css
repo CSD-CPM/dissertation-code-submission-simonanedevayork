@@ -107,3 +107,20 @@
   .dashboard-highlights {
     flex: 1;
   }
+
+  .dashboard-highlights h2 {
+    margin-top: 0;
+  }
+  
+  .status-column {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    margin-top: 0;
+    padding-top: 0;
+  }
+  
+  .dashboard-highlights {
+    margin-top: 0;
+    padding-top: 0;
+  }

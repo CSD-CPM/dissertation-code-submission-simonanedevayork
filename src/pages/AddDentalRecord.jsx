@@ -6,6 +6,14 @@ import "../components/Login.css";
 import logo from "../assets/logo.svg";
 import { authFetch } from "../utils/apiClient";
 
+function toDateInputValue(value) {
+  if (!value) return "";
+  const d = new Date(value);
+  if (Number.isNaN(d.getTime())) return "";
+  const tzOffset = d.getTimezoneOffset() * 60000;
+  return new Date(d.getTime() - tzOffset).toISOString().slice(0, 10);
+}
+
 export default function AddDentalRecord() {
   const navigate = useNavigate();
 
@@ -46,12 +54,17 @@ export default function AddDentalRecord() {
           navigate
         );
 
-        if (data && data.length > 0) {
-          const latest = data[0];
+        const records = data?.dentalRecords || data;
+
+        if (records && records.length > 0) {
+          const latest = [...records].sort(
+            (a, b) => new Date(b.createdTs) - new Date(a.createdTs)
+          )[0];
+
           if (latest.lastCleaningDate) {
             setFormData((prev) => ({
               ...prev,
-              lastCleaningDate: latest.lastCleaningDate,
+              lastCleaningDate: toDateInputValue(latest.lastCleaningDate),
             }));
           }
         }

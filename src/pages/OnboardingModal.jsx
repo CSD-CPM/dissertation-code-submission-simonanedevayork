@@ -14,16 +14,16 @@ export default function OnboardingModal({ onClose, onConsent }) {
       text: "See your dog’s latest health stats, records, and personalized highlights — all in one place.",
     },
     {
-      title: "Track Weight & Hormones",
+      title: "Track Weight",
       text: "Monitor changes over time and ensure your dog stays in a healthy range.",
     },
     {
       title: "Dental & Heart Records",
-      text: "Log checkups, cleanings, or conditions — PawWell visualizes progress for better awareness.",
+      text: "Log checkups, cleanings, or conditions — PawWell visualizes your status for better awareness.",
     },
     {
-      title: "Mobility & Health Insights",
-      text: "Run quick quizzes to detect early signs of discomfort and get actionable recommendations.",
+      title: "Mobility & Hormone Insights",
+      text: "Run quick quizzes to detect early signs of discomfort and get personalized actionable recommendations.",
     },
     {
       title: "Consent & Data Use",

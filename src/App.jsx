@@ -10,6 +10,7 @@ import AddHealthRecord from "./pages/AddHealthRecord";
 import Mobility from "./pages/Mobility";
 import MobilityQuiz from "./pages/MobilityQuiz";
 import Weight from "./pages/Weight";
+import AddWeightRecord from "./pages/AddWeightRecord";
 import Hormones from "./pages/Hormones";
 import HormonesQuiz from "./pages/HormonesQuiz";
 import Heart from "./pages/Heart";
@@ -45,6 +46,7 @@ function App() {
                 <Route path="health-records/add" element={<AddHealthRecord />} />
                 <Route path="mobility/quiz" element={<MobilityQuiz />} />
                 <Route path="weight" element={<Weight />} />
+                <Route path="/weight/add" element={<AddWeightRecord />} />
                 <Route path="dental" element={<Dental />} />
                 <Route path="/dental/add" element={<AddDentalRecord />} />
                 <Route path="/hormones/quiz" element={<HormonesQuiz />} />

@@ -54,20 +54,50 @@ export default function Hormones() {
   return (
     <div className="page-container">
       <div className="page-header">
-        <h1>Digital Dog Health Tracker<br />Hormones Tracker</h1>
+        <h1>
+          Digital Dog Health Tracker
+          <br />
+          Hormones Tracker
+        </h1>
       </div>
 
       <div className="mobility-status-grid">
-        {categories.map((cat) => {
-          const status = hormoneData[cat] || "red";
-          const info = hormoneStatusTexts[cat][status];
+        {categories.map((dog) => {
+          const status = hormoneData[dog];
+          const isMissing = status === null || status === undefined;
+
+          if (isMissing) {
+            return (
+              <div key={dog} className="mobility-card">
+                <h3>{dog.charAt(0).toUpperCase() + dog.slice(1)}</h3>
+                <p>
+                  <strong>Status:</strong> —
+                </p>
+                <p>
+                  <strong>Quiz not completed yet</strong>
+                </p>
+                <p className="mobility-tip">
+                  <strong>Tip:</strong> Complete the hormone quiz to assess your
+                  dog’s {dog} health.
+                </p>
+              </div>
+            );
+          }
+
+          const info = hormoneStatusTexts[dog][status];
 
           return (
-            <div key={cat} className="mobility-card">
-              <h3>{cat.charAt(0).toUpperCase() + cat.slice(1)}</h3>
-              <p><strong>Status:</strong> {colorMap[status]}</p>
-              <p><strong>{info.title}</strong></p>
-              <p className="mobility-tip"><strong>Tip:</strong> {info.tip}</p>
+            <div key={dog} className="mobility-card">
+              <h3>{dog.charAt(0).toUpperCase() + dog.slice(1)}</h3>
+              <p>
+                <strong>Status:</strong> {colorMap[status]}
+              </p>
+              <p>
+                <strong>{info.title}</strong>
+              </p>
+              <p className="mobility-tip">
+                <strong>Tip:</strong> {info.tip}
+              </p>
             </div>
           );
         })}
@@ -88,7 +118,9 @@ export default function Hormones() {
           ) : (
             healthHighlights.map((h, idx) => (
               <div key={idx} className="highlight-card">
-                <p><strong>{h.title}</strong></p>
+                <p>
+                  <strong>{h.title}</strong>
+                </p>
                 <p>{h.description}</p>
                 {h.advice && <p><em>{h.advice}</em></p>}
               </div>
