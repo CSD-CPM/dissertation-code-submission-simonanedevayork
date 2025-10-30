@@ -81,3 +81,30 @@
   .highlight-card:hover {
     transform: translateY(-3px);
   }  
+  .record-card {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .record-info {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+  
+  .record-actions {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .action-icon {
+    cursor: pointer;
+    font-size: 18px;
+    transition: color 0.2s ease;
+  }
+  
+  .delete-icon:hover {
+    color: #dc2626;
+  }

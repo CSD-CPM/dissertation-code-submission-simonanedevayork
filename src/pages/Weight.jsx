@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { FaCalendarAlt, FaTrashAlt } from "react-icons/fa";
 import {
   LineChart,
   Line,
@@ -30,7 +31,6 @@ export default function WeightTracker() {
         }
 
         let dogId = localStorage.getItem("dogId");
-
         if (!dogId) {
           const dogData = await authFetch(
             `http://localhost:8080/users/${participantId}/dog`,
@@ -71,6 +71,29 @@ export default function WeightTracker() {
     fetchWeights();
   }, [navigate]);
 
+  async function handleDelete(weightId) {
+    if (!window.confirm("Are you sure you want to delete this weight entry?")) return;
+
+    try {
+      const dogId = localStorage.getItem("dogId");
+      const res = await authFetch(
+        `http://localhost:8080/dogs/${dogId}/weights/${weightId}`,
+        { method: "DELETE" },
+        navigate
+      );
+
+      if (!res) {
+        alert("❌ Failed to delete record.");
+        return;
+      }
+
+      setWeights((prev) => prev.filter((w) => w.id !== weightId));
+    } catch (err) {
+      console.error("[Delete] Failed:", err);
+      alert("❌ Failed to delete record.");
+    }
+  }
+
   if (loading) return <p>Loading weight data...</p>;
   if (errorMsg) return <p style={{ color: "red" }}>{errorMsg}</p>;
   if (weights.length === 0) return <p>No weight data available.</p>;
@@ -81,11 +104,14 @@ export default function WeightTracker() {
   const maxGoal = goalWeightRange?.max || 0;
 
   const chartData = [...weights]
-    .sort((a, b) => new Date(a.date) - new Date(b.date))
-    .map((w) => ({
-      date: new Date(w.date).toLocaleDateString("en-US", { month: "short" }),
-      weight: w.current,
-    }));
+  .sort((a, b) => new Date(a.date) - new Date(b.date))
+  .map((w) => ({
+    date: new Date(w.date).toLocaleDateString("en-US", {
+      day: "2-digit",
+      month: "short",
+    }),
+    weight: w.current,
+  }));
 
   return (
     <div className="page-container">
@@ -176,7 +202,7 @@ export default function WeightTracker() {
           </div>
         </div>
 
-        {/* Right side: weight entries (instead of highlights) */}
+        {/* Right side: all weight records */}
         <div className="weight-highlights">
           <h2>All Weight Records</h2>
           {weights.length === 0 ? (
@@ -185,38 +211,46 @@ export default function WeightTracker() {
             weights
               .slice()
               .sort((a, b) => new Date(b.date) - new Date(a.date))
-              .map((record, idx) => (
-                <div key={idx} className="highlight-card">
-                  <p>
-                    <strong>
-                      {new Date(record.date).toLocaleDateString("en-GB", {
-                        day: "2-digit",
-                        month: "short",
-                        year: "numeric",
-                      })}
-                    </strong>
-                  </p>
-                  <p>
-                    Weight: <strong>{record.current.toFixed(1)} kg</strong>
-                  </p>
-                  <p>
-                    Status:{" "}
-                    {record.status === "green"
-                      ? "🟢 Healthy"
-                      : record.status === "yellow"
-                      ? "🟡 Borderline"
-                      : "🔴 Out of Range"}
-                  </p>
-                  <p>
-                    Goal:{" "}
-                    {record.goalWeightRange
-                      ? `${record.goalWeightRange.min.toFixed(
-                          1
-                        )} – ${record.goalWeightRange.max.toFixed(1)} kg`
-                      : "—"}
-                  </p>
-                </div>
-              ))
+              .map((record, idx) => {
+                const formattedDate = new Date(record.date).toLocaleDateString(
+                  "en-US",
+                  { year: "numeric", month: "long", day: "2-digit" }
+                );
+                return (
+                  <div key={idx} className="highlight-card record-card">
+                    <div className="record-info">
+                      <div className="record-date">
+                        <FaCalendarAlt
+                          className="calendar-icon"
+                          style={{
+                            marginRight: "8px",
+                            position: "relative",
+                            top: "2px",
+                          }}
+                        />
+                        <strong>{formattedDate}</strong>
+                      </div>
+                      <p>Weight: {record.current.toFixed(1)} kg</p>
+                      <p>
+                        Status:{" "}
+                        {record.status === "green"
+                          ? "🟢 Healthy"
+                          : record.status === "yellow"
+                          ? "🟡 Borderline"
+                          : "🔴 Out of Range"}
+                      </p>
+                    </div>
+
+                    <div className="record-actions">
+                      <FaTrashAlt
+                        className="action-icon delete-icon"
+                        title="Delete record"
+                        onClick={() => handleDelete(record.id)}
+                      />
+                    </div>
+                  </div>
+                );
+              })
           )}
         </div>
       </div>
